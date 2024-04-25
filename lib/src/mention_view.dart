@@ -299,8 +299,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
       _selectedMention = null;
     });
 
-    final _list = widget.mentions
-        .firstWhere((element) => selectedMention.str.contains(element.trigger));
+    final _list = widget.mentions.firstWhere((element) => selectedMention.str.contains(element.trigger));
 
     // find the text by range and replace with the new value.
     controller!.text = controller!.value.text.replaceRange(
@@ -312,11 +311,9 @@ class FlutterMentionsState extends State<FlutterMentions> {
     if (widget.onMentionAdd != null) widget.onMentionAdd!(value);
 
     // Move the cursor to next position after the new mentioned item.
-    var nextCursorPosition =
-        selectedMention.start + 1 + value['display']?.length as int? ?? 0;
+    var nextCursorPosition = selectedMention.start + 1 + value['display']?.length as int? ?? 0;
     if (widget.appendSpaceOnAdd) nextCursorPosition++;
-    controller!.selection =
-        TextSelection.fromPosition(TextPosition(offset: nextCursorPosition));
+    controller!.selection = TextSelection.fromPosition(TextPosition(offset: nextCursorPosition));
   }
 
   void suggestionListerner() {
@@ -329,8 +326,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
 
       // split on each word and generate a list with start & end position of each word.
       controller!.value.text.split(RegExp(r'(\s)')).forEach((element) {
-        lengthMap.add(
-            LengthMap(str: element, start: _pos, end: _pos + element.length));
+        lengthMap.add(LengthMap(str: element, start: _pos, end: _pos + element.length));
 
         _pos = _pos + element.length + 1;
       });
@@ -338,8 +334,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
       final val = lengthMap.indexWhere((element) {
         _pattern = widget.mentions.map((e) => e.trigger).join('|');
 
-        return element.end == cursorPos &&
-            element.str.toLowerCase().contains(RegExp(_pattern));
+        return element.end == cursorPos && element.str.toLowerCase().contains(RegExp(_pattern));
       });
 
       showSuggestions.value = val != -1;
@@ -407,18 +402,15 @@ class FlutterMentionsState extends State<FlutterMentions> {
   Widget build(BuildContext context) {
     // Filter the list based on the selection
     final list = _selectedMention != null
-        ? widget.mentions.firstWhere(
-            (element) => _selectedMention!.str.contains(element.trigger))
+        ? widget.mentions.firstWhere((element) => _selectedMention!.str.contains(element.trigger))
         : widget.mentions[0];
 
     return Container(
       child: PortalEntry(
-        portalAnchor: widget.suggestionPosition == SuggestionPosition.Bottom
-            ? Alignment.topCenter
-            : Alignment.bottomCenter,
-        childAnchor: widget.suggestionPosition == SuggestionPosition.Bottom
-            ? Alignment.bottomCenter
-            : Alignment.topCenter,
+        portalAnchor:
+            widget.suggestionPosition == SuggestionPosition.Bottom ? Alignment.topCenter : Alignment.bottomCenter,
+        childAnchor:
+            widget.suggestionPosition == SuggestionPosition.Bottom ? Alignment.bottomCenter : Alignment.topCenter,
         portal: ValueListenableBuilder(
           valueListenable: showSuggestions,
           builder: (BuildContext context, bool show, Widget? child) {
@@ -429,9 +421,7 @@ class FlutterMentionsState extends State<FlutterMentions> {
                     suggestionListDecoration: widget.suggestionListDecoration,
                     data: list.data.where((element) {
                       final ele = element['display'].toLowerCase();
-                      final str = _selectedMention!.str
-                          .toLowerCase()
-                          .replaceAll(RegExp(_pattern), '');
+                      final str = _selectedMention!.str.toLowerCase().replaceAll(RegExp(_pattern), '');
 
                       return ele == str ? false : ele.contains(str);
                     }).toList(),
@@ -447,46 +437,97 @@ class FlutterMentionsState extends State<FlutterMentions> {
           children: [
             ...widget.leading,
             Expanded(
-              child: TextField(
-                maxLines: widget.maxLines,
-                minLines: widget.minLines,
-                maxLength: widget.maxLength,
-                focusNode: widget.focusNode,
-                keyboardType: widget.keyboardType,
-                keyboardAppearance: widget.keyboardAppearance,
-                textInputAction: widget.textInputAction,
-                textCapitalization: widget.textCapitalization,
-                style: widget.style,
-                textAlign: widget.textAlign,
-                textDirection: widget.textDirection,
-                readOnly: widget.readOnly,
-                showCursor: widget.showCursor,
-                autofocus: widget.autofocus,
-                autocorrect: widget.autocorrect,
-                maxLengthEnforcement: widget.maxLengthEnforcement,
-                cursorColor: widget.cursorColor,
-                cursorRadius: widget.cursorRadius,
-                cursorWidth: widget.cursorWidth,
-                buildCounter: widget.buildCounter,
-                autofillHints: widget.autofillHints,
-                decoration: widget.decoration,
-                expands: widget.expands,
-                onEditingComplete: widget.onEditingComplete,
-                onTap: widget.onTap,
-                onSubmitted: widget.onSubmitted,
-                enabled: widget.enabled,
-                enableInteractiveSelection: widget.enableInteractiveSelection,
-                enableSuggestions: widget.enableSuggestions,
-                scrollController: widget.scrollController,
-                scrollPadding: widget.scrollPadding,
-                scrollPhysics: widget.scrollPhysics,
-                controller: controller,
-              ),
+              child: !kIsWeb
+                  ? TextField(
+                      maxLines: widget.maxLines,
+                      minLines: widget.minLines,
+                      maxLength: widget.maxLength,
+                      focusNode: widget.focusNode,
+                      keyboardType: widget.keyboardType,
+                      keyboardAppearance: widget.keyboardAppearance,
+                      textInputAction: widget.textInputAction,
+                      textCapitalization: widget.textCapitalization,
+                      style: widget.style,
+                      textAlign: widget.textAlign,
+                      textDirection: widget.textDirection,
+                      readOnly: widget.readOnly,
+                      showCursor: widget.showCursor,
+                      autofocus: widget.autofocus,
+                      autocorrect: widget.autocorrect,
+                      maxLengthEnforcement: widget.maxLengthEnforcement,
+                      cursorColor: widget.cursorColor,
+                      cursorRadius: widget.cursorRadius,
+                      cursorWidth: widget.cursorWidth,
+                      buildCounter: widget.buildCounter,
+                      autofillHints: widget.autofillHints,
+                      decoration: widget.decoration,
+                      expands: widget.expands,
+                      onEditingComplete: widget.onEditingComplete,
+                      onTap: widget.onTap,
+                      onSubmitted: widget.onSubmitted,
+                      enabled: widget.enabled,
+                      enableInteractiveSelection: widget.enableInteractiveSelection,
+                      enableSuggestions: widget.enableSuggestions,
+                      scrollController: widget.scrollController,
+                      scrollPadding: widget.scrollPadding,
+                      scrollPhysics: widget.scrollPhysics,
+                      controller: controller,
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: (widget.focusNode != null && widget.focusNode!.hasFocus)
+                                    ? Color(0xff423DFC)
+                                    : Color(0xffCCCCCC)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: EditableText(
+                            backgroundCursorColor: Colors.black,
+                            controller: controller ?? TextEditingController(),
+                            cursorColor: widget.cursorColor ?? Colors.black,
+                            focusNode: widget.focusNode ?? FocusNode(),
+                            keyboardType: widget.keyboardType,
+                            maxLines: widget.maxLines,
+                            minLines: widget.minLines,
+                            style: widget.style ?? TextStyle(),
+                            cursorWidth: 1,
+                            cursorHeight: 16,
+                            cursorOffset: const Offset(0, 2),
+                            readOnly: widget.readOnly,
+                            autofocus: widget.autofocus,
+                            showCursor: widget.showCursor ?? true,
+                            textDirection: widget.textDirection,
+                            textAlign: widget.textAlign,
+                            textCapitalization: widget.textCapitalization,
+                            textInputAction: widget.textInputAction,
+                            onTapOutside: (_) {
+                              if (widget.focusNode != null) {
+                                setState(() => widget.focusNode!.unfocus());
+                              }
+                            },
+                          ),
+                        ),
+                        if (widget.buildCounter != null && counterWidget() != null) counterWidget()!
+                      ],
+                    ),
             ),
             ...widget.trailing,
           ],
         ),
       ),
+    );
+  }
+
+  /// text 카운터 & 전체삭제 btn
+  Widget? counterWidget() {
+    return widget.buildCounter!(
+      context,
+      currentLength: controller?.text.length ?? 0,
+      maxLength: widget.maxLength,
+      isFocused: widget.focusNode?.hasFocus ?? false,
     );
   }
 }
