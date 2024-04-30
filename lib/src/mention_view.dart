@@ -50,6 +50,7 @@ class FlutterMentions extends StatefulWidget {
     this.appendSpaceOnAdd = true,
     this.hideSuggestionList = false,
     this.onSuggestionVisibleChanged,
+    this.border = true, // web only option
   }) : super(key: key);
 
   final bool hideSuggestionList;
@@ -478,10 +479,10 @@ class FlutterMentionsState extends State<FlutterMentions> {
                         Container(
                           padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                           decoration: BoxDecoration(
-                            border: Border.all(
+                            border: widget.border ? Border.all(
                                 color: (widget.focusNode != null && widget.focusNode!.hasFocus)
                                     ? Color(0xff423DFC)
-                                    : Color(0xffCCCCCC)),
+                                    : Color(0xffCCCCCC)) : null,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: EditableText(
