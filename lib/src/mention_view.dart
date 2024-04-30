@@ -242,6 +242,8 @@ class FlutterMentions extends StatefulWidget {
   /// {@macro flutter.services.autofill.autofillHints}
   final Iterable<String>? autofillHints;
 
+  final bool? border;
+  
   @override
   FlutterMentionsState createState() => FlutterMentionsState();
 }
