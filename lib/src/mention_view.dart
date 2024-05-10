@@ -243,7 +243,7 @@ class FlutterMentions extends StatefulWidget {
   final Iterable<String>? autofillHints;
 
   final bool border;
-  
+
   @override
   FlutterMentionsState createState() => FlutterMentionsState();
 }
@@ -481,36 +481,58 @@ class FlutterMentionsState extends State<FlutterMentions> {
                         Container(
                           padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                           decoration: BoxDecoration(
-                            border: widget.border ? Border.all(
-                                color: (widget.focusNode != null && widget.focusNode!.hasFocus)
-                                    ? Color(0xff423DFC)
-                                    : Color(0xffCCCCCC)) : null,
+                            border: widget.border
+                                ? Border.all(
+                                    color: (widget.focusNode != null && widget.focusNode!.hasFocus)
+                                        ? Color(0xff423DFC)
+                                        : Color(0xffCCCCCC))
+                                : null,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: EditableText(
-                            backgroundCursorColor: Colors.black,
-                            controller: controller ?? TextEditingController(),
-                            cursorColor: widget.cursorColor ?? Colors.black,
-                            focusNode: widget.focusNode ?? FocusNode(),
-                            keyboardType: widget.keyboardType,
-                            maxLines: widget.maxLines,
-                            minLines: widget.minLines,
-                            style: widget.style ?? TextStyle(),
-                            cursorWidth: 1,
-                            cursorHeight: 16,
-                            cursorOffset: const Offset(0, 2),
-                            readOnly: widget.readOnly,
-                            autofocus: widget.autofocus,
-                            showCursor: widget.showCursor ?? true,
-                            textDirection: widget.textDirection,
-                            textAlign: widget.textAlign,
-                            textCapitalization: widget.textCapitalization,
-                            textInputAction: widget.textInputAction,
-                            onTapOutside: (_) {
-                              if (widget.focusNode != null) {
-                                setState(() => widget.focusNode!.unfocus());
-                              }
-                            },
+                          child: Stack(
+                            children: [
+                              /// hint text
+                              if (controller?.text.isEmpty ?? true)
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Text(
+                                      widget.decoration.hintText ?? '',
+                                      style: widget.decoration.hintStyle ??
+                                          TextStyle(color: Color(0xffABABAB), fontSize: 14),
+                                    ),
+                                  ),
+                                ),
+                              
+                              /// input text
+                              EditableText(
+                                backgroundCursorColor: Colors.black,
+                                controller: controller ?? TextEditingController(),
+                                cursorColor: widget.cursorColor ?? Colors.black,
+                                focusNode: widget.focusNode ?? FocusNode(),
+                                keyboardType: widget.keyboardType,
+                                maxLines: widget.maxLines,
+                                minLines: widget.minLines,
+                                style: widget.style ?? TextStyle(),
+                                cursorWidth: 1,
+                                cursorHeight: 16,
+                                cursorOffset: const Offset(0, 2),
+                                readOnly: widget.readOnly,
+                                autofocus: widget.autofocus,
+                                showCursor: widget.showCursor ?? true,
+                                textDirection: widget.textDirection,
+                                textAlign: widget.textAlign,
+                                textCapitalization: widget.textCapitalization,
+                                textInputAction: widget.textInputAction,
+                                onTapOutside: (_) {
+                                  if (widget.focusNode != null) {
+                                    setState(() => widget.focusNode!.unfocus());
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                         ),
                         if (widget.buildCounter != null && counterWidget() != null) counterWidget()!
