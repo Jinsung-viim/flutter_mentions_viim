@@ -368,6 +368,8 @@ class FlutterMentionsState extends State<FlutterMentions> {
     }
   }
 
+  void refresh() => setState(() {});
+  
   @override
   void initState() {
     final data = mapToAnotation();
